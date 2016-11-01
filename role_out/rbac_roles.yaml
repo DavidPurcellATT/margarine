@@ -1,0 +1,3 @@
+Compute:
+  compute_extension:services:
+    - admin
