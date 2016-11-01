@@ -18,9 +18,6 @@ from tempest import config
 from tempest.test_discover import plugins
 from role_out import config as config_share
 
-Rbac_roles = [
-    cfg.StrOpt('rbac'
-]
 
 class RoleOutPlugin(plugins.TempestPlugin):
     #TODO: Learn what this is / does.
