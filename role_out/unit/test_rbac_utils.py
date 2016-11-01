@@ -15,7 +15,7 @@
 import json
 import mock
 
-from tempest.common.rbac import rbac_utils as utils
+from role_out import rbac_utils as utils
 
 from tempest.tests import base
 

@@ -15,8 +15,8 @@
 
 import logging
 
-from tempest.lib.rbac import rbac_auth
-from tempest.lib.rbac import rbac_exceptions
+import rbac_auth
+import rbac_exceptions
 from tempest import config
 
 from tempest.lib import exceptions

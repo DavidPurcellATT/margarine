@@ -14,7 +14,7 @@
 
 import os
 
-from tempest.lib.rbac import rbac_auth as auth
+from role_out import rbac_auth as auth
 
 from tempest.tests import base
 

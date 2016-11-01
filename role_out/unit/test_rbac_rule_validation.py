@@ -14,8 +14,8 @@
 
 import mock
 
-from tempest.common.rbac import rbac_exceptions
-from tempest.common.rbac import rbac_rule_validation as rbac_rv
+from role_out import rbac_exceptions
+from role_out import rbac_rule_validation as rbac_rv
 
 from tempest.lib import exceptions
 
