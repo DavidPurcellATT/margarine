@@ -22,9 +22,7 @@ from role_out import config as config_share
 class RoleOutPlugin(plugins.TempestPlugin):
     #TODO: Learn what this is / does.
     def get_opt_lists(self):
-        return [(
-            config_share.hello_world_group.name,
-            config_share.HelloWorldGroup)]
+        return []
 
     def load_tests(self):
         base_path = os.path.split(os.path.dirname(
@@ -34,13 +32,8 @@ class RoleOutPlugin(plugins.TempestPlugin):
 	print(full_test_dir)
         return full_test_dir, base_path
 
-    #TODO: Make these not random garbage
     def register_opts(self, conf):
         config.register_opt_group(
             conf,
-            config_share.service_available_group,
-            config_share.ServiceAvailableGroup)
-        config.register_opt_group(
-            conf,
-            config_share.hello_world_group,
-            config_share.HelloWorldGroup)
+            config_share.rbac_group,
+            config_share.RbacGroup)

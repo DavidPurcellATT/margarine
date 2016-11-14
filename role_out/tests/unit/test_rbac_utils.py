@@ -54,7 +54,7 @@ class RBACUtilsTest(base.TestCase):
                                     'id': '_member_id'}]})
         requests.get.return_value = response
 
-        config.identity.rbac_role = '_member_'
+        config.rbac.rbac_role = '_member_'
 
         self.assertEqual({'admin_role_id': None,
                           'rbac_role_id': '_member_id'},
@@ -74,7 +74,7 @@ class RBACUtilsTest(base.TestCase):
                                     'id': 'admin_id'}]})
         requests.get.return_value = response
 
-        config.identity.rbac_role = 'admin'
+        config.rbac.rbac_role = 'admin'
 
         self.assertEqual({'admin_role_id': 'admin_id',
                           'rbac_role_id': 'admin_id'},

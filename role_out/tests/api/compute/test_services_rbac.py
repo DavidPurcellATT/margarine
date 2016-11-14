@@ -44,7 +44,7 @@ class RbacServicesTestJSON(base.BaseV2ComputeTest):
             print("FFFFFFFFFFFFFFFFF" + CONF.auth.tempest_role)
             raise cls.skipException(
                 '%s skipped as tempest roles is not admin' % cls.__name__)
-        if not CONF.identity.rbac_flag:
+        if not CONF.rbac.rbac_flag:
             raise cls.skipException(
                 '%s skipped as RBAC flag not enabled' % cls.__name__)
         if not CONF.compute_feature_enabled.api_extensions:

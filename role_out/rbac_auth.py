@@ -16,7 +16,7 @@ import yaml
 
 from oslo_log import log as logging
 
-from tempest import exceptions
+from tempest.lib import exceptions
 
 LOG = logging.getLogger(__name__)
 

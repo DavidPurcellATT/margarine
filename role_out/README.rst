@@ -69,7 +69,7 @@ the tempest.conf file.
        # achieved configuring a list of test accounts (boolean value)
        use_dynamic_credentials = False
 
-#. [identity] section updates ::
+#. [rbac] section updates ::
 
        # The role that you want the RBAC tests to use for RBAC testing
        rbac_role=_member_

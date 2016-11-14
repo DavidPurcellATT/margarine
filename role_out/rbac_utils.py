@@ -58,7 +58,7 @@ class RbacUtils(object):
             data = response.data
             roles = json.loads(data)
             for item in roles['roles']:
-                if item['name'] == CONF.identity.rbac_role:
+                if item['name'] == CONF.rbac.rbac_role:
                     rbac_role_id = item['id']
                 if item['name'] == 'admin':
                     admin_role_id = item['id']

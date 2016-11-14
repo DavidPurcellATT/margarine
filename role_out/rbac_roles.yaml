@@ -1,3 +1,9 @@
 Compute:
   compute_extension:services:
     - admin
+  compute_extension:used_limits_for_admin:
+    - admin
+    - _member_
+  compute_extension:volume_attachments:create:
+    - admin
+    - _member_

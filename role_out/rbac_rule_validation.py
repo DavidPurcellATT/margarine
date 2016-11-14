@@ -29,22 +29,26 @@ def action(component, rule):
     def decorator(func):
         def wrapper(*args, **kwargs):
             authority = rbac_auth.RbacAuthority(
-                CONF.identity.rbac_policy_file, component)
-            allowed = authority.get_permission(rule, CONF.identity.rbac_role)
+                CONF.rbac.rbac_policy_file, component)
+            allowed = authority.get_permission(rule, CONF.rbac.rbac_role)
             try:
                 func(*args)
             except exceptions.Forbidden as e:
                 if allowed:
                     msg = ("Role %s was not allowed to perform %s." %
-                           (CONF.identity.rbac_role, rule))
+                           (CONF.rbac.rbac_role, rule))
                     LOG.error(msg)
                     raise exceptions.Forbidden(
                         "%s exception was: %s" %
                         (msg, e))
+            except exceptions.Unauthorized as e:
+                if allowed:
+                    msg = "UNAUTHORIZED"
+		    raise exceptions.Unauthorized(msg,e)
             except rbac_exceptions.RbacActionFailed as e:
                 if allowed:
                     msg = ("Role %s was not allowed to perform %s." %
-                           (CONF.identity.rbac_role, rule))
+                           (CONF.rbac.rbac_role, rule))
                     LOG.error(msg)
                     raise exceptions.Forbidden(
                         "%s RbacActionFailed was: %s" %
@@ -52,9 +56,9 @@ def action(component, rule):
             else:
                 if not allowed:
                     LOG.error("Role %s was allowed to perform %s" %
-                              (CONF.identity.rbac_role, rule))
+                              (CONF.rbac.rbac_role, rule))
                     raise StandardError(
                         "OverPermission: Role %s was allowed to perform %s" %
-                        (CONF.identity.rbac_role, rule))
+                        (CONF.rbac.rbac_role, rule))
         return wrapper
     return decorator
