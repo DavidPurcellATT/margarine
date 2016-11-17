@@ -25,9 +25,9 @@ class RBACUtilsTest(base.TestCase):
         super(RBACUtilsTest, self).setUp()
         self.rbac_utils = utils.RbacUtils
 
-    @mock.patch('tempest.common.rbac.rbac_utils.CONF')
-    @mock.patch('tempest.common.rbac.rbac_utils.requests')
-    def test_RBAC_utils_get_roles_none(self, requests, config):
+    @mock.patch('role_out.rbac_utils.CONF')
+    @mock.patch('role_out.rbac_utils.urllib3')
+    def test_RBAC_utils_get_roles_none(self, urllib3, config):
         self.rbac_utils.dictionary = {}
 
         caller = mock.Mock()
@@ -36,13 +36,13 @@ class RBACUtilsTest(base.TestCase):
         response = mock.Mock()
         response.status_code = 200
         response.text = json.dumps({'roles': []})
-        requests.get.return_value = response
+        urllib3.get.return_value = response
         self.assertEqual({'admin_role_id': None, 'rbac_role_id': None},
                          self.rbac_utils.get_roles(caller))
 
-    @mock.patch('tempest.common.rbac.rbac_utils.CONF')
-    @mock.patch('tempest.common.rbac.rbac_utils.requests')
-    def test_RBAC_utils_get_roles_member(self, requests, config):
+    @mock.patch('role_out.rbac_utils.CONF')
+    @mock.patch('role_out.rbac_utils.urllib3')
+    def test_RBAC_utils_get_roles_member(self, urllib3, config):
         self.rbac_utils.dictionary = {}
 
         caller = mock.Mock()
@@ -52,7 +52,7 @@ class RBACUtilsTest(base.TestCase):
         response.status_code = 200
         response.text = json.dumps({'roles': [{'name': '_member_',
                                     'id': '_member_id'}]})
-        requests.get.return_value = response
+        urllib3.get.return_value = response
 
         config.rbac.rbac_role = '_member_'
 
@@ -60,9 +60,9 @@ class RBACUtilsTest(base.TestCase):
                           'rbac_role_id': '_member_id'},
                          self.rbac_utils.get_roles(caller))
 
-    @mock.patch('tempest.common.rbac.rbac_utils.CONF')
-    @mock.patch('tempest.common.rbac.rbac_utils.requests')
-    def test_RBAC_utils_get_roles_admin(self, requests, config):
+    @mock.patch('role_out.rbac_utils.CONF')
+    @mock.patch('role_out.rbac_utils.urllib3')
+    def test_RBAC_utils_get_roles_admin(self, urllib3, config):
         self.rbac_utils.dictionary = {}
 
         caller = mock.Mock()
@@ -72,7 +72,7 @@ class RBACUtilsTest(base.TestCase):
         response.status_code = 200
         response.text = json.dumps({'roles': [{'name': 'admin',
                                     'id': 'admin_id'}]})
-        requests.get.return_value = response
+        urllib3.get.return_value = response
 
         config.rbac.rbac_role = 'admin'
 
@@ -80,9 +80,9 @@ class RBACUtilsTest(base.TestCase):
                           'rbac_role_id': 'admin_id'},
                          self.rbac_utils.get_roles(caller))
 
-    @mock.patch('tempest.common.rbac.rbac_utils.CONF')
-    @mock.patch('tempest.common.rbac.rbac_utils.requests')
-    def test_RBAC_utils_get_roles_admin_not_role(self, requests, config):
+    @mock.patch('role_out.rbac_utils.CONF')
+    @mock.patch('role_out.rbac_utils.urllib3')
+    def test_RBAC_utils_get_roles_admin_not_role(self, urllib3, config):
         self.rbac_utils.dictionary = {}
 
         caller = mock.Mock()
@@ -93,7 +93,7 @@ class RBACUtilsTest(base.TestCase):
         response.text = json.dumps(
             {'roles': [{'name': 'admin', 'id': 'admin_id'}]}
         )
-        requests.get.return_value = response
+        urllib3.get.return_value = response
 
         self.assertEqual({'admin_role_id': 'admin_id', 'rbac_role_id': None},
                          self.rbac_utils.get_roles(caller))
@@ -105,9 +105,9 @@ class RBACUtilsTest(base.TestCase):
         self.assertEqual({'admin_role_id': None, 'rbac_role_id': None},
                          self.rbac_utils.get_roles(None))
 
-    @mock.patch('tempest.common.rbac.rbac_utils.CONF')
-    @mock.patch('tempest.common.rbac.rbac_utils.requests')
-    def test_RBAC_utils_get_roles_response_404(self, requests, config):
+    @mock.patch('role_out.rbac_utils.CONF')
+    @mock.patch('role_out.rbac_utils.urllib3')
+    def test_RBAC_utils_get_roles_response_404(self, urllib3, config):
         self.rbac_utils.dictionary = {}
 
         caller = mock.Mock()
@@ -116,17 +116,17 @@ class RBACUtilsTest(base.TestCase):
         response = mock.Mock()
         response.status_code = 404
         response.text = json.dumps({'roles': []})
-        requests.get.return_value = response
+        urllib3.get.return_value = response
 
         self.assertRaises(StandardError, self.rbac_utils.get_roles, caller)
 
     def test_RBAC_utils_switch_roles_none(self):
         self.assertIsNone(self.rbac_utils.switch_role(None))
 
-    @mock.patch('tempest.common.rbac.rbac_utils.CONF')
-    @mock.patch('tempest.common.rbac.rbac_utils.RbacUtils.get_roles')
-    @mock.patch('tempest.common.rbac.rbac_utils.requests')
-    def test_RBAC_utils_switch_roles_member(self, requests,
+    @mock.patch('role_out.rbac_utils.CONF')
+    @mock.patch('role_out.rbac_utils.RbacUtils.get_roles')
+    @mock.patch('role_out.rbac_utils.urllib3')
+    def test_RBAC_utils_switch_roles_member(self, urllib3,
                                             get_roles, config):
         get_roles.return_value = {'admin_role_id': None,
                                   'rbac_role_id': '_member_id'}
@@ -144,17 +144,17 @@ class RBACUtilsTest(base.TestCase):
         response_200.status_code = 200
         response_200.text = json.dumps({'roles': [{'id': 'id'}]})
 
-        requests.put.side_effect = None
-        requests.put.return_value = response_204
-        requests.delete.return_value = response_204
-        requests.get.return_value = response_200
+        urllib3.put.side_effect = None
+        urllib3.put.return_value = response_204
+        urllib3.delete.return_value = response_204
+        urllib3.get.return_value = response_200
 
         self.assertIsNone(self.rbac_utils.switch_role(self, "_member_"))
 
-    @mock.patch('tempest.common.rbac.rbac_utils.CONF')
-    @mock.patch('tempest.common.rbac.rbac_utils.RbacUtils.get_roles')
-    @mock.patch('tempest.common.rbac.rbac_utils.requests')
-    def test_RBAC_utils_switch_roles_false(self, requests,
+    @mock.patch('role_out.rbac_utils.CONF')
+    @mock.patch('role_out.rbac_utils.RbacUtils.get_roles')
+    @mock.patch('role_out.rbac_utils.urllib3')
+    def test_RBAC_utils_switch_roles_false(self, urllib3,
                                            get_roles, config):
         get_roles.return_value = {'admin_role_id': None,
                                   'rbac_role_id': '_member_id'}
@@ -172,17 +172,17 @@ class RBACUtilsTest(base.TestCase):
         response_200.status_code = 200
         response_200.text = json.dumps({'roles': [{'id': 'id'}]})
 
-        requests.put.side_effect = None
-        requests.put.return_value = response_204
-        requests.delete.return_value = response_204
-        requests.get.return_value = response_200
+        urllib3.put.side_effect = None
+        urllib3.put.return_value = response_204
+        urllib3.delete.return_value = response_204
+        urllib3.get.return_value = response_200
 
         self.assertIsNone(self.rbac_utils.switch_role(self, False))
 
-    @mock.patch('tempest.common.rbac.rbac_utils.CONF')
-    @mock.patch('tempest.common.rbac.rbac_utils.RbacUtils.get_roles')
-    @mock.patch('tempest.common.rbac.rbac_utils.requests')
-    def test_RBAC_utils_switch_roles_get_roles_fails(self, requests,
+    @mock.patch('role_out.rbac_utils.CONF')
+    @mock.patch('role_out.rbac_utils.RbacUtils.get_roles')
+    @mock.patch('role_out.rbac_utils.urllib3')
+    def test_RBAC_utils_switch_roles_get_roles_fails(self, urllib3,
                                                      get_roles, config):
         get_roles.return_value = {'admin_role_id': None,
                                   'rbac_role_id': '_member_id'}
@@ -200,15 +200,15 @@ class RBACUtilsTest(base.TestCase):
         response_200.status_code = 404
         response_200.text = json.dumps({'roles': [{'id': 'id'}]})
 
-        requests.put.side_effect = None
-        requests.put.return_value = response_204
-        requests.delete.return_value = response_204
-        requests.get.return_value = response_200
+        urllib3.put.side_effect = None
+        urllib3.put.return_value = response_204
+        urllib3.delete.return_value = response_204
+        urllib3.get.return_value = response_200
 
         self.assertRaises(StandardError, self.rbac_utils.switch_role, self,
                           False)
 
-    @mock.patch('tempest.common.rbac.rbac_utils.RbacUtils.get_roles')
+    @mock.patch('role_out.rbac_utils.RbacUtils.get_roles')
     def test_RBAC_utils_switch_roles_exception(self, get_roles):
         get_roles.return_value = {'admin_role_id': None,
                                   'rbac_role_id': '_member_id'}

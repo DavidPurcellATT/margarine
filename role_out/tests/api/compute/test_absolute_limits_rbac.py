@@ -13,22 +13,25 @@
 
 from role_out import rbac_rule_validation
 from role_out.rbac_utils import rbac_utils
-from tempest.common.utils import data_utils
+from role_out.rbac_mixin import BaseRbacTest as mixin
+from tempest.lib.common.utils import data_utils
 
-from tempest.api.compute import base
+#TODO: Is this acceptable?
+from role_out.tests.api import rbac_base
 from tempest.api.identity import base as identity_base
+
 from tempest import config
 
-from tempest import test
+from tempest.lib import decorators
 
 from oslo_log import log as logging
 
 CONF = config.CONF
 LOG = logging.getLogger(__name__)
 
-class RBACAbsoluteLimitsTestJSON(base.BaseV2ComputeTest):
+class RBACAbsoluteLimitsTestJSON(rbac_base.BaseV2ComputeRbacTest):
 
-    credentials = ['admin', 'primary']
+    mixin.credentials
 
     @classmethod
     def setup_clients(cls):
@@ -47,20 +50,11 @@ class RBACAbsoluteLimitsTestJSON(base.BaseV2ComputeTest):
     @classmethod
     def skip_checks(cls):
         super(RBACAbsoluteLimitsTestJSON, cls).skip_checks()
-        if CONF.auth.tempest_roles != ['admin']:
-            raise cls.skipException(
-                "%s skipped because tempest roles is not admin" % cls.__name__)
-        if not CONF.rbac.rbac_flag:
-            raise cls.skipException(
-                '%s skipped as RBAC flag not enabled' % cls.__name__)
-        if not CONF.compute_feature_enabled.api_extensions:
-            raise cls.skipException(
-                '%s skipped as no compute extensions enabled' % cls.__name__)
+        mixin.skip_checks()
 
-    @test.attr(type='rbac')
     @rbac_rule_validation.action(component="Compute", rule="compute_extension:"
                                            "used_limits_for_admin")
-    @test.idempotent_id('3fb60f83-9a5f-4fdd-89d9-26c3710844a1')
+    @decorators.idempotent_id('3fb60f83-9a5f-4fdd-89d9-26c3710844a1')
     def test_used_limits_for_admin_rbac(self):
         tenant_name = data_utils.rand_name(name='tenant')
         body = self.tenants_client.create_tenant(name=tenant_name)['tenant']
@@ -69,7 +63,6 @@ class RBACAbsoluteLimitsTestJSON(base.BaseV2ComputeTest):
         rbac_utils.switch_role(self, switchToRbacRole=True)
         try:
             temp = self.client.show_limits()
-	    print(temp)
         finally:
             rbac_utils.switch_role(self, switchToRbacRole=False)
             self.tenants_client.delete_tenant(tenant['id'])

@@ -23,14 +23,14 @@ from tempest.tests import base
 
 
 class RBACRuleValidationTest(base.TestCase):
-    @mock.patch('tempest.common.rbac.rbac_auth.RbacAuthority')
+    @mock.patch('role_out.rbac_auth.RbacAuthority')
     def test_RBAC_rv_happy_path(self, mock_auth):
         decorator = rbac_rv.action("", "")
         mock_function = mock.Mock()
         wrapper = decorator(mock_function)
         wrapper()
 
-    @mock.patch('tempest.common.rbac.rbac_auth.RbacAuthority')
+    @mock.patch('role_out.rbac_auth.RbacAuthority')
     def test_RBAC_rv_forbidden(self, mock_auth):
         decorator = rbac_rv.action("", "")
         mock_function = mock.Mock()
@@ -38,7 +38,7 @@ class RBACRuleValidationTest(base.TestCase):
         wrapper = decorator(mock_function)
         self.assertRaises(exceptions.Forbidden, wrapper)
 
-    @mock.patch('tempest.common.rbac.rbac_auth.RbacAuthority')
+    @mock.patch('role_out.rbac_auth.RbacAuthority')
     def test_RBAC_rv_rbac_action_failed(self, mock_auth):
         decorator = rbac_rv.action("", "")
         mock_function = mock.Mock()
@@ -46,7 +46,7 @@ class RBACRuleValidationTest(base.TestCase):
         wrapper = decorator(mock_function)
         self.assertRaises(exceptions.Forbidden, wrapper)
 
-    @mock.patch('tempest.common.rbac.rbac_auth.RbacAuthority')
+    @mock.patch('role_out.rbac_auth.RbacAuthority')
     def test_RBAC_rv_not_allowed(self, mock_auth):
         decorator = rbac_rv.action("", "")
 
@@ -59,7 +59,7 @@ class RBACRuleValidationTest(base.TestCase):
 
         self.assertRaises(StandardError, wrapper)
 
-    @mock.patch('tempest.common.rbac.rbac_auth.RbacAuthority')
+    @mock.patch('role_out.rbac_auth.RbacAuthority')
     def test_RBAC_rv_forbidden_not_allowed(self, mock_auth):
         decorator = rbac_rv.action("", "")
 
@@ -73,7 +73,7 @@ class RBACRuleValidationTest(base.TestCase):
 
         self.assertIsNone(wrapper())
 
-    @mock.patch('tempest.common.rbac.rbac_auth.RbacAuthority')
+    @mock.patch('role_out.rbac_auth.RbacAuthority')
     def test_RBAC_rv_rbac_action_failed_not_allowed(self, mock_auth):
         decorator = rbac_rv.action("", "")
 

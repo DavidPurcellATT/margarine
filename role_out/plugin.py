@@ -20,7 +20,6 @@ from role_out import config as config_share
 
 
 class RoleOutPlugin(plugins.TempestPlugin):
-    #TODO: Learn what this is / does.
     def get_opt_lists(self):
         return []
 

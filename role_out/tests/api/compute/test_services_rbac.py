@@ -15,18 +15,18 @@
 
 import logging
 
-from tempest.api.compute import base
+from role_out.tests.api import rbac_base
 from role_out import rbac_rule_validation
 from role_out.rbac_utils import rbac_utils
 
 from tempest import config
-from tempest import test
+from role_out import test
 
 CONF = config.CONF
 LOG = logging.getLogger(__name__)
 
 
-class RbacServicesTestJSON(base.BaseV2ComputeTest):
+class RbacServicesTestJSON(rbac_base.BaseV2ComputeRbacTest):
 
     credentials = ['primary', 'admin']
 
@@ -41,7 +41,6 @@ class RbacServicesTestJSON(base.BaseV2ComputeTest):
     def skip_checks(cls):
         super(RbacServicesTestJSON, cls).skip_checks()
         if CONF.auth.tempest_roles != ['admin']:
-            print("FFFFFFFFFFFFFFFFF" + CONF.auth.tempest_role)
             raise cls.skipException(
                 '%s skipped as tempest roles is not admin' % cls.__name__)
         if not CONF.rbac.rbac_flag:
