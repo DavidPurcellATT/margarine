@@ -18,6 +18,7 @@ import logging
 from role_out.tests.api import rbac_base
 from role_out import rbac_rule_validation
 from role_out.rbac_utils import rbac_utils
+from role_out.rbac_mixin import BaseRbacTest as mixin
 
 from tempest import config
 from role_out import test
@@ -28,7 +29,7 @@ LOG = logging.getLogger(__name__)
 
 class RbacServicesTestJSON(rbac_base.BaseV2ComputeRbacTest):
 
-    credentials = ['primary', 'admin']
+    credentials = mixin.credentials
 
     @classmethod
     def setup_clients(cls):
@@ -40,17 +41,8 @@ class RbacServicesTestJSON(rbac_base.BaseV2ComputeRbacTest):
     @classmethod
     def skip_checks(cls):
         super(RbacServicesTestJSON, cls).skip_checks()
-        if CONF.auth.tempest_roles != ['admin']:
-            raise cls.skipException(
-                '%s skipped as tempest roles is not admin' % cls.__name__)
-        if not CONF.rbac.rbac_flag:
-            raise cls.skipException(
-                '%s skipped as RBAC flag not enabled' % cls.__name__)
-        if not CONF.compute_feature_enabled.api_extensions:
-            raise cls.skipException(
-                '%s skipped as no compute extensions enabled' % cls.__name__)
+        mixin.skip_checks()
 
-    @test.attr(type='rbac')
     @test.idempotent_id('ec55d455-bab2-4c36-b282-ae3af0efe287')
     @test.requires_ext(extension='os-services', service='compute')
     @rbac_rule_validation.action(

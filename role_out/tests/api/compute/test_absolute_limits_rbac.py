@@ -16,7 +16,6 @@ from role_out.rbac_utils import rbac_utils
 from role_out.rbac_mixin import BaseRbacTest as mixin
 from tempest.lib.common.utils import data_utils
 
-#TODO: Is this acceptable?
 from role_out.tests.api import rbac_base
 from tempest.api.identity import base as identity_base
 

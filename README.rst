@@ -1,9 +1,9 @@
 
-============
-Tempest RBAC
-============
+========
+ROLE OUT
+========
 
-Tempest RBAC is a set of utilities and direction to test Role Base Access
+Role Out is a set of utilities and direction to test Role Base Access
 Control for OpenStack API's.
 
 * Tempest Best Practices: https://wiki.web.att.com/display/CCPdev/Tempest+Best+Practices
@@ -38,7 +38,6 @@ Tempest RBAC Design Principles that we strive to live by are:
   - Follow Tempest Coding Guide http://docs.openstack.org/developer/tempest/HACKING.html
 * All RBAC test case methods should have the following decorators
 
-  - @test.attr(type='rbac')
   - @rbac_rule_validation.action(...)
   - @test.idempotent_id(...) see Test Identification with Idempotent ID
     at http://docs.openstack.org/developer/tempest/HACKING.html
@@ -82,6 +81,7 @@ the tempest.conf file.
 rbac_roles.yaml
 +++++++++++++++
 
+TODO: Remove and replace with real-time policy checking
 The rbac_roles.yaml file contain a list of roles that are allowed to perform
 an action in a service e.g. below is a list of roles that can create a
 compute instance
