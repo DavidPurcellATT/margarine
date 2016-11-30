@@ -1,30 +1,17 @@
-import atexit
 import functools
-import os
-import re
-import sys
 
-import debtcollector.moves
-import fixtures
 from oslo_log import log as logging
-from oslo_serialization import jsonutils as json
-from oslo_utils import importutils
-import six
-from six.moves import urllib
-import testscenarios
 import testtools
 
 from tempest import config
-from tempest.lib.common.utils import data_utils
-from tempest.lib.common.utils import test_utils
 from tempest.lib import decorators
-from tempest.lib import exceptions as lib_exc
 
 LOG = logging.getLogger(__name__)
 
 CONF = config.CONF
 
 idempotent_id = decorators.idempotent_id
+
 
 def attr(**kwargs):
     """A decorator which applies the testtools attr decorator
@@ -81,4 +68,3 @@ def is_extension_enabled(extension_name, service):
     if extension_name in config_dict[service]:
         return True
     return False
-

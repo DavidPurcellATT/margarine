@@ -14,9 +14,10 @@
 
 import os
 
+from role_out import config as config_share
+
 from tempest import config
 from tempest.test_discover import plugins
-from role_out import config as config_share
 
 
 class RoleOutPlugin(plugins.TempestPlugin):
@@ -28,7 +29,6 @@ class RoleOutPlugin(plugins.TempestPlugin):
             os.path.abspath(__file__)))[0]
         test_dir = "role_out/tests"
         full_test_dir = os.path.join(base_path, test_dir)
-	print(full_test_dir)
         return full_test_dir, base_path
 
     def register_opts(self, conf):

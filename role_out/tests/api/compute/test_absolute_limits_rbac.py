@@ -16,7 +16,6 @@ from role_out.rbac_utils import rbac_utils
 from tempest.lib.common.utils import data_utils
 
 from role_out.tests.api import rbac_base
-from tempest.api.identity import base as identity_base
 
 from tempest import config
 
@@ -27,8 +26,8 @@ from oslo_log import log as logging
 CONF = config.CONF
 LOG = logging.getLogger(__name__)
 
-class RBACAbsoluteLimitsTestJSON(rbac_base.BaseV2ComputeRbacTest):
 
+class RBACAbsoluteLimitsTestJSON(rbac_base.BaseV2ComputeRbacTest):
 
     @classmethod
     def setup_clients(cls):
@@ -41,10 +40,11 @@ class RBACAbsoluteLimitsTestJSON(rbac_base.BaseV2ComputeRbacTest):
     @classmethod
     def resource_setup(cls):
         super(RBACAbsoluteLimitsTestJSON, cls).resource_setup()
-	cls.tenants = []
+        cls.tenants = []
 
     @rbac_rule_validation.action(component="Compute", service='nova',
-                                 rule="compute_extension:used_limits_for_admin")
+                                 rule="compute_extension:"
+                                 "used_limits_for_admin")
     @decorators.idempotent_id('3fb60f83-9a5f-4fdd-89d9-26c3710844a1')
     def test_used_limits_for_admin_rbac(self):
         tenant_name = data_utils.rand_name(name='tenant')
@@ -53,9 +53,8 @@ class RBACAbsoluteLimitsTestJSON(rbac_base.BaseV2ComputeRbacTest):
         self.tenants.append(tenant)
         rbac_utils.switch_role(self, switchToRbacRole=True)
         try:
-            temp = self.client.show_limits()
+            self.client.show_limits()
         finally:
             rbac_utils.switch_role(self, switchToRbacRole=False)
             self.tenants_client.delete_tenant(tenant['id'])
             self.tenants.remove(tenant)
-

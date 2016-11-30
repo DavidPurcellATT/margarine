@@ -17,7 +17,9 @@ from tempest import config
 
 CONF = config.CONF
 
+
 class BaseV2ImageRbacTest(image_base.BaseV2ImageTest):
+
     credentials = ['primary', 'admin']
 
     @classmethod

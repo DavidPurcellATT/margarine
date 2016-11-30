@@ -13,12 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import collections
-import csv
-from optparse import OptionParser
 import os
-import re
-import yaml
 
 from oslo_config import cfg
 from oslo_log import log as logging
@@ -31,13 +26,10 @@ from tempest import config
 CONF = config.CONF
 LOG = logging.getLogger(__name__)
 
-#TODO: Read this in from somewhere?  Maybe a config option.
-
 DEFAULT_ROLES = set(['admin', 'admin_support', 'admin_viewer',
                      'snapshot_member', 'support_member', 'viewer',
                      '_member_'])
 
-#TODO: Read from config.
 RULES_TO_SKIP = ['default', 'context_is_admin']
 TESTED_RULES = []
 PARSED_RULES = {}
@@ -75,7 +67,8 @@ class RbacPolicyConverter(object):
         self.default_roles = DEFAULT_ROLES
         self.rules = {}
 
-        if self.default_roles and isinstance(self.default_roles, (list, tuple)):
+        if self.default_roles and isinstance(self.default_roles,
+                                             (list, tuple)):
             self.default_roles = set(self.default_roles)
 
         for heading, mapping in self.policy_mapping.items():
@@ -91,8 +84,8 @@ class RbacPolicyConverter(object):
         The mapping values include the original file name and a unique set of
         roles found in each policy file.
         """
-        #There should really be a better way to do this.
-        #Also, why are the names different at all?
+        # There should really be a better way to do this.
+        # Also, why are the names different at all?
         tempest_mapping = {
             'cinder': 'Volume',
             'glance': 'Image',
@@ -121,7 +114,7 @@ class RbacPolicyConverter(object):
                             policy_file, alternate_path.format(policy_file)))
             if not policy_file or not policy_file.endswith('.json'):
                 raise RbacResourceSetupFailed(
-                    'Policy file: {0} must be a json file.'.format(policy_file))
+                    'Policy file: {0} must be a json file'.format(policy_file))
             mapping_val = None
             for key, val in tempest_mapping.items():
                 if key in policy_file:

@@ -15,13 +15,13 @@
 
 import logging
 
-from role_out.tests.api import rbac_base
 from role_out import rbac_rule_validation
-from role_out import converter
+from role_out import test
+
 from role_out.rbac_utils import rbac_utils
+from role_out.tests.api import rbac_base
 
 from tempest import config
-from role_out import test
 
 CONF = config.CONF
 LOG = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ class RbacServicesTestJSON(rbac_base.BaseV2ComputeRbacTest):
         rule="compute_extension:services")
     def test_services_ext(self):
         try:
-	    rbac_utils.switch_role(self, switchToRbacRole=True)
+            rbac_utils.switch_role(self, switchToRbacRole=True)
             self.client.list_services()
         finally:
             rbac_utils.switch_role(self, switchToRbacRole=False)

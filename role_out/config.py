@@ -1,8 +1,7 @@
 from oslo_config import cfg
-from tempest import config
 
 rbac_group = cfg.OptGroup(name='rbac',
-                             title='RBAC testing options')
+                          title='RBAC testing options')
 
 RbacGroup = [
     cfg.StrOpt('rbac_role',

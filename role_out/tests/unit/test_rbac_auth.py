@@ -105,4 +105,3 @@ class RBACAuthTest(base.TestCase):
         ]
 
         self.assertIsNone(auth.RoleParser.parse("FAILURE"))
-

@@ -86,4 +86,3 @@ class RBACRuleValidationTest(base.TestCase):
         mock_auth.return_value = mock_permission
 
         self.assertIsNone(wrapper())
-

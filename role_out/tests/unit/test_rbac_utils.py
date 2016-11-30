@@ -214,4 +214,3 @@ class RBACUtilsTest(base.TestCase):
                                   'rbac_role_id': '_member_id'}
         self.assertRaises(AttributeError, self.rbac_utils.switch_role,
                           self, "admin")
-
