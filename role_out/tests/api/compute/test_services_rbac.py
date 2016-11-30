@@ -17,8 +17,8 @@ import logging
 
 from role_out.tests.api import rbac_base
 from role_out import rbac_rule_validation
+from role_out import converter
 from role_out.rbac_utils import rbac_utils
-from role_out.rbac_mixin import BaseRbacTest as mixin
 
 from tempest import config
 from role_out import test
@@ -29,28 +29,20 @@ LOG = logging.getLogger(__name__)
 
 class RbacServicesTestJSON(rbac_base.BaseV2ComputeRbacTest):
 
-    credentials = mixin.credentials
-
     @classmethod
     def setup_clients(cls):
         super(RbacServicesTestJSON, cls).setup_clients()
         cls.admin_client = cls.os_adm.agents_client
-        cls.auth_provider = cls.os.auth_provider
         cls.client = cls.services_client
-
-    @classmethod
-    def skip_checks(cls):
-        super(RbacServicesTestJSON, cls).skip_checks()
-        mixin.skip_checks()
 
     @test.idempotent_id('ec55d455-bab2-4c36-b282-ae3af0efe287')
     @test.requires_ext(extension='os-services', service='compute')
     @rbac_rule_validation.action(
-        component="Compute",
+        component="Compute", service='nova',
         rule="compute_extension:services")
     def test_services_ext(self):
         try:
-            rbac_utils.switch_role(self, switchToRbacRole=True)
+	    rbac_utils.switch_role(self, switchToRbacRole=True)
             self.client.list_services()
         finally:
             rbac_utils.switch_role(self, switchToRbacRole=False)

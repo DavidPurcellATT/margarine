@@ -16,45 +16,17 @@ import yaml
 
 from oslo_log import log as logging
 
+from role_out import converter
 from tempest.lib import exceptions
 
 LOG = logging.getLogger(__name__)
 
 
-class RoleParser(object):
-    _inner = None
-
-    class Inner(object):
-        _rbac_map = None
-
-        def __init__(self, filepath):
-            with open(filepath) as f:
-                RoleParser.Inner._rbac_map = list(yaml.safe_load_all(f))
-                f.close()
-
-    def __init__(self, filepath):
-        if RoleParser._inner is None:
-            RoleParser._inner = RoleParser.Inner(filepath)
-
-    @staticmethod
-    def parse(component):
-        try:
-            for section in RoleParser.Inner._rbac_map:
-                if component in section:
-                    return section[component]
-        except yaml.parser.ParserError:
-            LOG.error("Error while parsing roles yaml file. Did you pass a "
-                      "valid component name from the test case?")
-        return None
-
-
 class RbacAuthority(object):
-    def __init__(self, filepath=None, component=None):
-        if filepath is not None and component is not None:
-            self.roles_dict = RoleParser(filepath).parse(component)
-
-    def createMap(self, dictionary):
-        self.roles_dict = dictionary
+    def __init__(self, filepath=None, component=None, service=None):
+        self.converter = converter.RbacPolicyConverter([service])
+        self.roles_dict = self.converter.rules[component]
+	LOG.debug(self.roles_dict.keys())
 
     def get_permission(self, api, role):
         if self.roles_dict is None:

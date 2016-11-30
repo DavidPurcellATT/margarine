@@ -25,11 +25,11 @@ CONF = config.CONF
 LOG = logging.getLogger(__name__)
 
 
-def action(component, rule):
+def action(component, service, rule):
     def decorator(func):
         def wrapper(*args, **kwargs):
             authority = rbac_auth.RbacAuthority(
-                CONF.rbac.rbac_policy_file, component)
+                CONF.rbac.rbac_policy_file, component, service)
             allowed = authority.get_permission(rule, CONF.rbac.rbac_role)
             try:
                 func(*args)
@@ -41,10 +41,6 @@ def action(component, rule):
                     raise exceptions.Forbidden(
                         "%s exception was: %s" %
                         (msg, e))
-            except exceptions.Unauthorized as e:
-                if allowed:
-                    msg = "UNAUTHORIZED"
-		    raise exceptions.Unauthorized(msg,e)
             except rbac_exceptions.RbacActionFailed as e:
                 if allowed:
                     msg = ("Role %s was not allowed to perform %s." %
