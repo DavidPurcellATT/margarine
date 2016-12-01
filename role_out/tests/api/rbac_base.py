@@ -13,6 +13,7 @@
 
 from tempest.api.compute import base as compute_base
 from tempest.api.image import base as image_base
+from tempest.api.network import base as network_base
 from tempest import config
 
 CONF = config.CONF
@@ -35,6 +36,25 @@ class BaseV2ImageRbacTest(image_base.BaseV2ImageTest):
     @classmethod
     def setup_clients(cls):
         super(BaseV2ImageRbacTest, cls).setup_clients()
+        cls.auth_provider = cls.os.auth_provider
+
+class BaseNetworkRbacTest(network_base.BaseNetworkTest):
+
+    credentials = ['primary', 'admin']
+
+    @classmethod
+    def skip_checks(cls):
+        super(BaseNetworkRbacTest, cls).skip_checks()
+        if not CONF.rbac.rbac_flag:
+            raise cls.skipException(
+                "%s skipped as RBAC Flag not enabled" % cls.__name__)
+        if 'admin' not in CONF.auth.tempest_roles:
+            raise cls.skipException(
+                "%s skipped because tempest roles is not admin" % cls.__name__)
+
+    @classmethod
+    def setup_clients(cls):
+        super(BaseNetworkRbacTest, cls).setup_clients()
         cls.auth_provider = cls.os.auth_provider
 
 

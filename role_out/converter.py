@@ -154,7 +154,6 @@ class RbacPolicyConverter(object):
         generic_check_dict = self._get_generic_check_dict(enforcer.rules)
 
         for rule_name, rule_checker in enforcer.rules.items():
-            LOG.debug(rule_name)
             PARSED_RULES.setdefault(heading, [])
             PARSED_RULES[heading].append(rule_name)
 

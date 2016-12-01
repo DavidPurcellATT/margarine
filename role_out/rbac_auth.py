@@ -25,7 +25,6 @@ class RbacAuthority(object):
     def __init__(self, filepath=None, component=None, service=None):
         self.converter = converter.RbacPolicyConverter([service])
         self.roles_dict = self.converter.rules[component]
-        LOG.debug(self.roles_dict.keys())
 
     def get_permission(self, api, role):
         if self.roles_dict is None:
