@@ -74,26 +74,3 @@ the tempest.conf file.
        rbac_role=_member_
        # Tell standard RBAC test cases to run other wise it they are skipped.
        rbac_flag=true
-       # The location of the rbac_roles.yaml file that hold the roles that
-       # should be able to call the API.
-       rbac_policy_file=/tmp/scripts/rbac_roles.yaml
-
-rbac_roles.yaml
-+++++++++++++++
-
-TODO: Remove and replace with real-time policy checking
-The rbac_roles.yaml file contain a list of roles that are allowed to perform
-an action in a service e.g. below is a list of roles that can create a
-compute instance
- ::
-
-  Compute:
-    compute:create:
-      - _member_
-      - snapshot_member
-      - support_member
-      - admin
-      - admin_support
-
-The file will contain section for each service it support and actions for
-that service.
