@@ -1,9 +1,9 @@
 
-========
-ROLE OUT
-========
+=========
+MARGARINE
+=========
 
-Role Out is a set of utilities and direction to test Role Base Access
+Margarine is a set of utilities to test Role Base Access
 Control for OpenStack API's.
 
 * Tempest Best Practices: https://wiki.web.att.com/display/CCPdev/Tempest+Best+Practices
@@ -25,7 +25,6 @@ Tempest RBAC Design Principles that we strive to live by are:
 * Create standard utiliy to handle items like:
 
   - Switch User roles from admin to the testing role
-  - Parse and access data from the rbac_roles.yaml file
 * Only test access to the API not the functionality of the API
 * Tempest RBAC test should only run if rbac_flag is enabled.
 * Tempest test should make sure when the rbac_flag is enabled and
